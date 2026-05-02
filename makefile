@@ -1,49 +1,63 @@
-# ================= CONFIG =================
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Iinclude `pkg-config --cflags sdl2 SDL2_ttf`
-LDFLAGS = `pkg-config --libs sdl2 SDL2_ttf`
+# =========================
+# FLAGS
+# =========================
+CFLAGS = -Wall -Wextra -std=c11 -Iinclude `sdl2-config --cflags`
+LDFLAGS = `sdl2-config --libs` -lSDL2_ttf -lm
 
-# ================= DOSSIERS =================
-SRC = src
-BUILD = build
-BIN = bin
+# =========================
+# DOSSIERS
+# =========================
+SRC_DIR = src
+BUILD_DIR = build
+BIN_DIR = bin
 
-# ================= SOURCES =================
-SOURCES = \
-$(SRC)/main.c \
-$(SRC)/menu.c \
-$(SRC)/ui/draw.c \
-$(SRC)/modules/physique/pendule.c \
-$(SRC)/modules/physique/ressort.c
+# =========================
+# SOURCES
+# =========================
+SRC =  $(SRC_DIR)/main.c \
+       $(SRC_DIR)/ui/draw.c \
+       $(SRC_DIR)/modules/physique/pendule.c \
+       $(SRC_DIR)/modules/physique/ressort.c \
+       $(SRC_DIR)/modules/physique/physics_menu.c \
+       $(SRC_DIR)/modules/physique/physics_controller.c \
+       $(SRC_DIR)/modules/maths/graphe.c \
+       $(SRC_DIR)/modules/maths/maths_menu.c \
+       $(SRC_DIR)/modules/maths/maths_controller.c
 
-# ================= OBJETS =================
-OBJECTS = $(SOURCES:$(SRC)/%.c=$(BUILD)/%.o)
+# =========================
+# OBJETS (dans build/)
+# =========================
+OBJ = $(SRC:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
-# ================= EXEC =================
-EXEC = $(BIN)/smartlab
+# =========================
+# EXECUTABLE UNIQUE
+# =========================
+NAME = $(BIN_DIR)/smartlab.exe
 
-# ================= RULES =================
+# =========================
+# REGLE PRINCIPALE
+# =========================
+all: $(NAME)
 
-all: $(EXEC)
+# création exécutable
+$(NAME): $(OBJ)
+	@mkdir -p $(BIN_DIR)
+	$(CC) $(OBJ) -o $(NAME) $(LDFLAGS)
 
-$(EXEC): $(OBJECTS)
-	@mkdir -p $(BIN)
-	$(CC) $^ -o $@ $(LDFLAGS)
-
-# Compilation .c -> .o
-$(BUILD)/%.o: $(SRC)/%.c
+# compilation des .c → .o
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Nettoyage
+# =========================
+# NETTOYAGE
+# =========================
 clean:
-	rm -rf $(BUILD)
+	rm -rf $(BUILD_DIR)
 
 fclean: clean
-	rm -rf $(BIN)
+	rm -rf $(BIN_DIR)
 
 re: fclean all
-
-run: all
-	./$(EXEC)

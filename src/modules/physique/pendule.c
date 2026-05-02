@@ -205,7 +205,7 @@ void simulation_pendule(SDL_Renderer *ren, SDL_Window *win)
         while(SDL_PollEvent(&e))
         {
 
-            if(e.type==SDL_QUIT) return;
+            if(e.type==SDL_QUIT) exit(0);
 
             int mx,my;
             SDL_GetMouseState(&mx,&my);
@@ -231,6 +231,8 @@ void simulation_pendule(SDL_Renderer *ren, SDL_Window *win)
 
                 else holding=1;
             }
+            if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
+            return;
 
             if(e.type==SDL_MOUSEBUTTONUP)
             {

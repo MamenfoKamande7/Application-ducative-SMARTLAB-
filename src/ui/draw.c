@@ -1,4 +1,7 @@
 #include "ui/draw.h"
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif // M_PI
 #include <math.h>
 
 void drawText(SDL_Renderer *r, TTF_Font *font, const char *text, int x, int y){
