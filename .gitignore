@@ -1,0 +1,11 @@
+#Dossiers compiles
+build/
+bin/
+
+#Fichiers compiles
+*.o
+*.exe
+*.out
+
+#Fichiers temporaires
+*.log
