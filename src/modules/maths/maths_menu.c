@@ -3,6 +3,7 @@
 
 #include "ui/draw.h"
 #include "modules/maths/maths_menu.h"
+//#include "modules/maths/trigonometrie.h"
 
 int maths_menu(SDL_Renderer *ren, SDL_Window *win)
 {
@@ -11,6 +12,7 @@ int maths_menu(SDL_Renderer *ren, SDL_Window *win)
     TTF_Font *font = TTF_OpenFont("assets/fonts/ariblk.ttf", 22);
 
     SDL_Rect btnGraph = {350, 250, 300, 70};
+   // SDL_Rect btnTrigo = {350, 300, 300, 70};
 
     SDL_Event e;
 
@@ -31,6 +33,18 @@ int maths_menu(SDL_Renderer *ren, SDL_Window *win)
                 {
                     return MATHS_GRAPHE;
                 }
+
+
+
+                /*if(mx > btnTrigo.x && mx < btnTrigo.x + btnTrigo.w &&
+                   my > btnTrigo.y && my < btnTrigo.y + btnTrigo.h)
+                {
+                    simulation_trigonometrique(ren,win);
+                }*/
+
+
+
+
             }
         }
 
@@ -44,5 +58,10 @@ int maths_menu(SDL_Renderer *ren, SDL_Window *win)
         drawText(ren,font,"Graphe",btnGraph.x+100,btnGraph.y+20);
 
         SDL_RenderPresent(ren);
+
+        /*SDL_SetRenderDrawColor(ren,70,160,220,255);
+        SDL_RenderFillRect(ren,&btnTrigo);
+        drawText(ren,font,"Trigonometrie",btnTrigo.x+50,btnTrigo.y+20);*/
+
     }
 }

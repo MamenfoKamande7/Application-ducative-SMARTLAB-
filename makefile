@@ -1,63 +1,58 @@
 CC = gcc
 
-# =========================
-# FLAGS
-# =========================
-CFLAGS = -Wall -Wextra -std=c11 -Iinclude `sdl2-config --cflags`
-LDFLAGS = `sdl2-config --libs` -lSDL2_ttf -lm
+CFLAGS = -Iinclude -Wall -Wextra
 
-# =========================
-# DOSSIERS
-# =========================
-SRC_DIR = src
-BUILD_DIR = build
-BIN_DIR = bin
+LDFLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lm
 
-# =========================
-# SOURCES
-# =========================
-SRC =  $(SRC_DIR)/main.c \
-       $(SRC_DIR)/ui/draw.c \
-       $(SRC_DIR)/modules/physique/pendule.c \
-       $(SRC_DIR)/modules/physique/ressort.c \
-       $(SRC_DIR)/modules/physique/physics_menu.c \
-       $(SRC_DIR)/modules/physique/physics_controller.c \
-       $(SRC_DIR)/modules/maths/graphe.c \
-       $(SRC_DIR)/modules/maths/maths_menu.c \
-       $(SRC_DIR)/modules/maths/maths_controller.c
+SRC = \
+src/main.c \
+src/ui/draw.c \
+src/modules/physique/pendule.c \
+src/modules/physique/ressort.c \
+src/modules/physique/physics_menu.c \
+src/modules/physique/physics_controller.c \
+src/modules/maths/graphe.c \
+src/modules/maths/maths_menu.c \
+src/modules/maths/maths_controller.c
 
-# =========================
-# OBJETS (dans build/)
-# =========================
-OBJ = $(SRC:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+OBJ = $(SRC:src/%.c=build/%.o)
 
-# =========================
-# EXECUTABLE UNIQUE
-# =========================
-NAME = $(BIN_DIR)/smartlab.exe
+TARGET = bin/smartlab.exe
 
-# =========================
-# REGLE PRINCIPALE
-# =========================
-all: $(NAME)
+# =====================================================
+# BUILD
+# =====================================================
 
-# création exécutable
-$(NAME): $(OBJ)
-	@mkdir -p $(BIN_DIR)
-	$(CC) $(OBJ) -o $(NAME) $(LDFLAGS)
+all: $(TARGET)
 
-# compilation des .c → .o
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+$(TARGET): $(OBJ)
+	@mkdir -p bin
+	$(CC) $(OBJ) -o $(TARGET) $(LDFLAGS)
+
+# =====================================================
+# OBJECTS
+# =====================================================
+
+build/%.o: src/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# =========================
-# NETTOYAGE
-# =========================
+# =====================================================
+# RUN
+# =====================================================
+
+run: all
+	./$(TARGET)
+
+# =====================================================
+# CLEAN
+# =====================================================
+
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf build bin
 
-fclean: clean
-	rm -rf $(BIN_DIR)
+# =====================================================
+# PHONY
+# =====================================================
 
-re: fclean all
+.PHONY: all run clean
