@@ -1,0 +1,14 @@
+# Exécutables
+*.exe
+
+# Objets compilés
+*.o
+
+# Dossier bin
+bin/
+
+# VSCode
+.vscode/
+
+# Logs
+*.log
